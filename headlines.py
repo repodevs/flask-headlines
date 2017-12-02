@@ -2,7 +2,7 @@
 
 import feedparser
 from flask import Flask
-
+from flask import render_template
 
 app = Flask(__name__)
 
@@ -20,14 +20,7 @@ def get_news(publication='bbc'):
     title = first_article.get('title').encode('utf8') if first_article.get('title') else None
     published = first_article.get('published').encode('utf8') if first_article.get('published') else None
     summary = first_article.get('summary').encode('utf8') if first_article.get('summary') else None
-    return """<html>
-        <body>
-            <h1> HEADLINES </h1>
-            <b>{0}</b> <br />
-            <i>{1}</i> <br />
-            <p>{2}</p> <br />
-        </body>
-    </html>""".format(title, published, summary)
+    return render_template("home.html")
 
 
 if __name__ == '__main__':
