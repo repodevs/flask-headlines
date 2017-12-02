@@ -17,6 +17,9 @@ RSS_FEEDS = {'bbc': 'http://feeds.bbci.co.uk/news/rss.xml',
 def get_news(publication='bbc'):
     feed = feedparser.parse(RSS_FEEDS[publication])
     first_article = feed['entries'][0]
+    title = first_article.get('title').encode('utf8') if first_article.get('title') else None
+    published = first_article.get('published').encode('utf8') if first_article.get('published') else None
+    summary = first_article.get('summary').encode('utf8') if first_article.get('summary') else None
     return """<html>
         <body>
             <h1> HEADLINES </h1>
@@ -24,8 +27,7 @@ def get_news(publication='bbc'):
             <i>{1}</i> <br />
             <p>{2}</p> <br />
         </body>
-    </html>""".format(first_article.get('title'), first_article.get('published'),
-                first_article.get('summary'))
+    </html>""".format(title, published, summary)
 
 
 if __name__ == '__main__':
