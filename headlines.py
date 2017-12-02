@@ -17,23 +17,39 @@ RSS_FEEDS = {'bbc': 'http://feeds.bbci.co.uk/news/rss.xml',
              'fox': 'http://feeds.foxnews.com/foxnews/latest',
              'iol': 'http://www.iol.co.za/cmlink/1.640'}
 
+WEATHER_URL = "http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid=1b9129a11f4310eb2020dcbc586532f9"
+
+DEFAULTS = {'publication': 'bbc',
+            'city': 'Sragen,ID'}
+
 
 @app.route('/', methods=['GET', 'POST'])
-def get_news():
-    query = request.form.get("publication")
+def home():
+    # get customized headlines based on user input or default
+    publication = request.args.get('publication')
+    if not publication:
+        publication = DEFAULTS['publication']
+    articles = get_news(publication)
+    # get customized weather based on input or default
+    city = request.args.get('city')
+    if not city:
+        city = DEFAULTS['city']
+    weather = get_weather(city)
+    return render_template("home.html", articles=articles, weather=weather)
+
+
+def get_news(query):
     if not query or query.lower() not in RSS_FEEDS:
-        publication = "bbc"
+        publication = DEFAULTS['publication']
     else:
         publication = query.lower()
     feed = feedparser.parse(RSS_FEEDS[publication])
-    weather = get_weather("Sragen,ID")
-    return render_template("home.html", articles=feed['entries'], weather=weather)
+    return feed['entries']
 
 
 def get_weather(query):
-    api_url = "http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid=1b9129a11f4310eb2020dcbc586532f9"
     query = urllib.quote(query)
-    url = api_url.format(query)
+    url = WEATHER_URL.format(query)
     data = urllib2.urlopen(url).read()
     parsed = json.loads(data)
     weather = None
