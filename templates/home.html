@@ -6,13 +6,34 @@
 <body>
 	<h1>Headlines</h1>
 	<h2>Current Weather</h2>
-	<p>City: <b>{{weather.city}}, {{weather.country}}</b></p>
-	<p>{{weather.description}} | {{weather.temperature}}&#8451;</p>
-	<br />
 	<form>
 		<input type="text" name="city" placeholder="weather search" />
 		<input type="submit" value="Submit" />
 	</form>
+	<br />
+	<p>City: <b>{{weather.city}}, {{weather.country}}</b></p>
+	<p>{{weather.description}} | {{weather.temperature}}&#8451;</p>
+	<hr />
+	<h2>Currency</h2>
+	<form>
+		from: 	<select name="currency_from">
+					<option value="IDR">IDR</option>
+					<option value="USD">USD</option>
+					<option value="GBP">GBP</option>
+					<option value="EUR">EUR</option>
+					<option value="ZAR">ZAR</option>
+				</select>
+		to: 	<select name="currency_to">
+					<option value="IDR">IDR</option>
+					<option value="USD">USD</option>
+					<option value="GBP">GBP</option>
+					<option value="EUR">EUR</option>
+					<option value="ZAR">ZAR</option>
+				</select>
+
+		<input type="submit" value="Submit">
+	</form>
+	1 {{currency_from}} = {{currency_to}} {{rate}}
 	<hr />
 	<h2>Headlines</h2>
 	<form action="/" method="GET">
